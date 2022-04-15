@@ -22,31 +22,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <nav className={styles.mainnav}>
-        <ul>
-          <Link href="/">
-            <a>
-              <li>Home</li>
-            </a>
-          </Link>{" "}
-          <Link href="/about">
-            <a>
-              <li>About</li>
-            </a>
-          </Link>{" "}
-          <Link href="/blog">
-            <a>
-              <li>Blog</li>
-            </a>
-          </Link>{" "}
-          <Link href="/contact">
-            <a>
-              <li>Contact</li>
-            </a>
-          </Link>
-        </ul>
-      </nav>
-
       <main className={styles.main}>
         <h1 className={styles.title}>
           Welcome to <a href="">Hunting Coder</a>
