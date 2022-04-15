@@ -1,6 +1,7 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,10 +14,26 @@ export default function Home() {
 
       <nav className={styles.mainnav}>
         <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>Blog</li>
-          <li>Contact</li>
+          <Link href="/">
+            <a>
+              <li>Home</li>
+            </a>
+          </Link>{" "}
+          <Link href="/about">
+            <a>
+              <li>About</li>
+            </a>
+          </Link>{" "}
+          <Link href="/blog">
+            <a>
+              <li>Blog</li>
+            </a>
+          </Link>{" "}
+          <Link href="/contact">
+            <a>
+              <li>Contact</li>
+            </a>
+          </Link>
         </ul>
       </nav>
 
@@ -26,7 +43,7 @@ export default function Home() {
         </h1>
 
         <p className={styles.description}>
-        A blog for hunting coders by hunting coders
+          A blog for hunting coders by hunting coders
         </p>
 
         <h2>Popular Blogs</h2>
@@ -50,7 +67,6 @@ export default function Home() {
             <h2>How to learn Javascript in 2022?</h2>
             <p>JavaScript is a language used to design logic for the web</p>
           </a>
-
         </div>
       </main>
 
@@ -60,12 +76,12 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
+  );
 }
