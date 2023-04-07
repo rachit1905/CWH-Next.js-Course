@@ -1,9 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
+import { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-export default function Home() {
+export default function Home(props) {
+  const allrecomm = props.recommends;
+  const [recomm, setRecomm] = useState(allrecomm.slice(0, 4));
+  const [count, setCount] = useState(4);
+
   return (
     <div className={styles.container}>
       <style jsx>
@@ -31,8 +36,8 @@ export default function Home() {
           <Image
             className={styles.myImg}
             src="/homeImg.jpg"
-            height={108}
-            width={198}
+            height={200}
+            width={200}
           />
         </div>
 
@@ -42,29 +47,51 @@ export default function Home() {
 
         <h2>Popular Blogs</h2>
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>How to learn Javascript in 2022?</h2>
-            <p>JavaScript is a language used to design logic for the web</p>
-          </a>
-
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>How to learn Javascript in 2022?</h2>
-            <p>JavaScript is a language used to design logic for the web</p>
-          </a>
-
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>How to learn Javascript in 2022?</h2>
-            <p>JavaScript is a language used to design logic for the web</p>
-          </a>
-
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>How to learn Javascript in 2022?</h2>
-            <p>JavaScript is a language used to design logic for the web</p>
-          </a>
+          <InfiniteScroll
+            style={{ overflow: "shown", width: "100%" }}
+            dataLength={count}
+            next={() => {
+              setCount(count + 2);
+              setRecomm(allrecomm.slice(0, count));
+            }}
+            hasMore={recomm.length < allrecomm.length}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+            {recomm.map((blog,key) => {
+              return (
+                <div key={key} className={styles.card}>
+                  <a href={"/blogpost/" + blog.href}>
+                    <h2>{blog.title}</h2>
+                    <p>{blog.content.substr(0, 240)}...</p>
+                  </a>
+                </div>
+              );
+            })}
+          </InfiniteScroll>
         </div>
       </main>
 
       <footer className={styles.footer}></footer>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  let allBlogs = await fetch("http://localhost:3000/api/getBlogs");
+  allBlogs = await allBlogs.json();
+  let recommends = [];
+  while (allBlogs.length > 0) {
+    let choice = Math.floor(Math.random() * (allBlogs.length - 1));
+    recommends.push(allBlogs[choice]);
+    allBlogs.splice(choice, 1);
+  }
+  // console.log(recommends);
+  return {
+    props: { recommends },
+  };
 }
